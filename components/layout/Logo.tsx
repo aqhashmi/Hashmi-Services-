@@ -4,18 +4,21 @@ import { company } from "@/data/company";
 import { cn } from "@/lib/utils";
 
 /**
- * Site logo. References the PNG in /public (do not recreate the logo in code).
- * `mono` applies a brightness/contrast filter for the footer's white version.
+ * Site logo. References the brand PNG in /public (do not recreate it in code).
+ * The asset is a stacked lockup (chevron mark over the "HASHMI" wordmark and
+ * tagline), trimmed to 407x328 with a transparent background.
  *
- * NOTE: Place the brand logo at /public/hashmi_logo_png.png. A placeholder
- * is included so the project runs out of the box — replace it with the real asset.
+ * `mono` applies a white treatment for use on dark/coloured surfaces.
+ * Pass `imgClassName` to override the display height per placement.
  */
 export function Logo({
   className,
+  imgClassName,
   mono = false,
   priority = false,
 }: {
   className?: string;
+  imgClassName?: string;
   mono?: boolean;
   priority?: boolean;
 }) {
@@ -28,13 +31,15 @@ export function Logo({
       <Image
         src="/hashmi_logo_png.png"
         alt={`${company.name} logo`}
-        width={180}
-        height={48}
+        width={407}
+        height={328}
         priority={priority}
         className={cn(
-          "h-10 w-auto object-contain transition-opacity",
-          // The footer uses a white/mono treatment per the brief.
-          mono && "brightness-0 invert"
+          "w-auto object-contain transition-opacity",
+          // Default display height; tuned for the stacked lockup.
+          "h-12 lg:h-14",
+          mono && "brightness-0 invert",
+          imgClassName
         )}
       />
     </Link>

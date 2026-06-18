@@ -8,20 +8,21 @@ export const company = {
   tagline: "Start Your Business in Dubai with Confidence",
   description:
     "Hashmi Business Setup Services is a Dubai-based company-formation consultancy offering end-to-end support for mainland, free zone, and offshore company setup, visas, banking, and ongoing compliance.",
-  // Contact details (placeholders — replace with real values).
-  phoneDisplay: "+971 4 000 0000",
-  phoneHref: "+97140000000",
-  whatsappDisplay: "+971 50 000 0000",
-  whatsappHref: "971500000000", // digits only for wa.me links
-  email: "hello@hashmisetup.ae",
+  // Contact details.
+  phoneDisplay: "+971 4 351 5125", // office landline
+  phoneHref: "+97143515125",
+  // Mobile & WhatsApp are the same number.
+  whatsappDisplay: "+971 50 996 1724",
+  whatsappHref: "971509961724", // digits only for wa.me links
+  email: "info@hashmiservices.com",
   address: {
-    line1: "Office 000, Business Bay Tower",
-    line2: "Business Bay, Dubai",
+    line1: "Office M09, Al Sajaya 6",
+    line2: "Abu Bakr Al Siddique Road, Dubai",
     country: "United Arab Emirates",
   },
   hours: "Sun–Thu, 9:00 AM – 6:00 PM (GST)",
   // Base URL used for metadata / canonical / Open Graph.
-  url: "https://www.hashmisetup.ae",
+  url: "https://www.hashmiservices.com",
   social: {
     instagram: "https://instagram.com",
     linkedin: "https://linkedin.com",

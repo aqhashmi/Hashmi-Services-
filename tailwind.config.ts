@@ -14,25 +14,27 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Backgrounds / surfaces
-        base: "#0A0A0B", // near-black page background
-        surface: "#15131A", // elevated surface
-        card: "#1C1A24", // card background
-        border: "#2A2730", // hairline borders
+        // Backgrounds / surfaces (light theme)
+        base: "#F7F7FB", // off-white page background
+        surface: "#EFEEF5", // subtle grey for alternating sections
+        card: "#FFFFFF", // card background
+        border: "#E5E3EC", // hairline borders
 
         // Brand purples
         primary: {
           DEFAULT: "#7C3AED", // primary purple
           deep: "#4C1D95", // deep purple
-          light: "#A78BFA", // light lavender
+          // On a light theme the "light" accent must stay legible, so it is
+          // a deeper violet (used for accent text, icons, focus rings).
+          light: "#6D28D9",
         },
 
         // Logo silver-grey ("HAS")
         silver: "#9CA3AF",
 
         // Text
-        ink: "#F5F5F7", // primary text
-        muted: "#A1A1AA", // secondary text
+        ink: "#17151F", // primary text (near-black)
+        muted: "#56545F", // secondary text
       },
       fontFamily: {
         sans: ["var(--font-poppins)", "system-ui", "sans-serif"],
@@ -42,13 +44,13 @@ const config: Config = {
         "chevron-gradient":
           "linear-gradient(135deg, #9CA3AF 0%, #7C3AED 100%)",
         "purple-glow":
-          "radial-gradient(60% 60% at 50% 0%, rgba(124,58,237,0.28) 0%, rgba(124,58,237,0) 70%)",
+          "radial-gradient(60% 60% at 50% 0%, rgba(124,58,237,0.16) 0%, rgba(124,58,237,0) 70%)",
         "mesh-hero":
-          "radial-gradient(40% 50% at 20% 10%, rgba(124,58,237,0.22) 0%, rgba(10,10,11,0) 60%), radial-gradient(45% 55% at 85% 20%, rgba(167,139,250,0.16) 0%, rgba(10,10,11,0) 55%)",
+          "radial-gradient(40% 50% at 20% 10%, rgba(124,58,237,0.14) 0%, rgba(247,247,251,0) 60%), radial-gradient(45% 55% at 85% 20%, rgba(167,139,250,0.16) 0%, rgba(247,247,251,0) 55%)",
       },
       boxShadow: {
-        glow: "0 0 0 1px rgba(124,58,237,0.25), 0 18px 60px -20px rgba(124,58,237,0.45)",
-        card: "0 12px 40px -16px rgba(0,0,0,0.6)",
+        glow: "0 0 0 1px rgba(124,58,237,0.18), 0 18px 50px -20px rgba(124,58,237,0.35)",
+        card: "0 12px 36px -16px rgba(23,21,31,0.16)",
       },
       letterSpacing: {
         brand: "0.08em",

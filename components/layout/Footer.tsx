@@ -25,7 +25,7 @@ export function Footer() {
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand + blurb */}
           <div className="lg:col-span-1">
-            <Logo mono />
+            <Logo />
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">
               End-to-end company formation in Dubai — mainland, free zone, and
               offshore — with visas, banking, and ongoing compliance handled for you.

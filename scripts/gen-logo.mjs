@@ -33,9 +33,10 @@ const baseX = 26;
 const baseTop = 60;
 for (let i = 0; i < n; i++) {
   const t = i / (n - 1);
-  const r = Math.round(156 + (124 - 156) * t);
-  const g = Math.round(163 + (58 - 163) * t);
-  const b = Math.round(175 + (237 - 175) * t);
+  // Slate-grey -> purple (darker grey start so tiles read on a light bg).
+  const r = Math.round(107 + (124 - 107) * t);
+  const g = Math.round(114 + (58 - 114) * t);
+  const b = Math.round(128 + (237 - 128) * t);
   const topY = baseTop - i * rise;
   const leftX = baseX + i * step;
   for (let row = 0; row < th; row++) {
@@ -53,8 +54,8 @@ const FONT = {
   M: ["10001", "11011", "10101", "10101", "10001", "10001", "10001"],
   I: ["11111", "00100", "00100", "00100", "00100", "00100", "11111"],
 };
-const GREY = [156, 163, 175];
-const PURPLE = [167, 139, 250];
+const GREY = [71, 85, 105]; // dark slate "HAS" — reads on a light background
+const PURPLE = [124, 58, 237]; // brand purple "HMI"
 const scale = 9;
 let cx = 184;
 const cyTop = 42;
