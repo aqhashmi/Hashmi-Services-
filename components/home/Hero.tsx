@@ -6,6 +6,7 @@ import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { GradientText } from "@/components/ui/GradientText";
 import { ChevronBackdrop, ChevronTiles } from "@/components/ui/ChevronTiles";
+import { HeroPackageSlider } from "./HeroPackageSlider";
 
 const trustBadges = [
   "10,000+ Companies Formed",
@@ -68,7 +69,7 @@ export function Hero() {
               Get a Free Consultation
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Button>
-            <Button href="/packages" variant="secondary" size="lg">
+            <Button href="#calculator" variant="secondary" size="lg">
               <Calculator className="h-4 w-4" aria-hidden="true" />
               Calculate Your Cost
             </Button>
@@ -91,6 +92,15 @@ export function Hero() {
               </li>
             ))}
           </motion.ul>
+
+          {/* Pricing packages slider */}
+          <motion.div
+            initial={reduce ? false : { opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.36 }}
+          >
+            <HeroPackageSlider />
+          </motion.div>
         </div>
       </Container>
 

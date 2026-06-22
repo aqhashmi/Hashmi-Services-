@@ -6,6 +6,10 @@ export const dynamic = "force-dynamic";
 
 const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+// In development, surface the real failure reason to the client so issues
+// (e.g. env vars not loaded) are obvious. In production, stay generic.
+const isDev = process.env.NODE_ENV !== "production";
+
 /**
  * Receives a contact-form submission and stores it in the Supabase
  * `contacts` table. No authentication — anyone may submit (the database RLS
@@ -39,6 +43,26 @@ export async function POST(req: Request) {
     );
   }
 
+  // Guard: if the Supabase env vars aren't loaded, fail with a clear reason.
+  // (Most common cause: the dev server was started before .env existed —
+  // env vars are only read at startup, so a restart is required.)
+  if (
+    !process.env.NEXT_PUBLIC_SUPABASE_URL ||
+    !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+  ) {
+    console.error(
+      "Supabase env vars are not loaded. Stop the dev server and run `npm run dev` again after creating .env."
+    );
+    return NextResponse.json(
+      {
+        error: isDev
+          ? "Supabase env vars are not loaded. Stop the dev server (Ctrl+C) and run `npm run dev` again — .env is only read at startup."
+          : "Server is not configured. Please try again later.",
+      },
+      { status: 500 }
+    );
+  }
+
   try {
     const supabase = createClient();
     const { error } = await supabase.from("contacts").insert({
@@ -50,10 +74,13 @@ export async function POST(req: Request) {
     });
 
     if (error) {
-      // Log server-side for debugging; keep the client message generic.
       console.error("Supabase insert error:", error.message);
       return NextResponse.json(
-        { error: "We couldn't save your message. Please try again." },
+        {
+          error: isDev
+            ? `Database error: ${error.message}`
+            : "We couldn't save your message. Please try again.",
+        },
         { status: 500 }
       );
     }

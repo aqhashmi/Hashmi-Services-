@@ -5,6 +5,7 @@ import { WhyChoose } from "@/components/home/WhyChoose";
 import { SetupProcess } from "@/components/home/SetupProcess";
 import { FreeZonesSection } from "@/components/home/FreeZonesSection";
 import { PackagesTeaser } from "@/components/home/PackagesTeaser";
+import { CostCalculatorSection } from "@/components/home/CostCalculatorSection";
 import { Testimonials } from "@/components/home/Testimonials";
 import { FAQSection } from "@/components/home/FAQSection";
 import { CTABanner } from "@/components/home/CTABanner";
@@ -21,6 +22,7 @@ export default function HomePage() {
       <SetupProcess />
       <FreeZonesSection />
       <PackagesTeaser />
+      <CostCalculatorSection />
       <Testimonials />
       <FAQSection />
       <CTABanner />
