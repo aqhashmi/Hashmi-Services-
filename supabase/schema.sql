@@ -1,7 +1,7 @@
 -- ============================================================================
 -- Hashmi Business Setup Services — Supabase schema
 --
--- Run this once in your Supabase project:
+-- Run this once in your Supabase project's SQL EDITOR (not the Table Editor):
 --   Dashboard → SQL Editor → New query → paste → Run
 --
 -- It creates the `contacts` table for contact-form submissions and enables
@@ -9,6 +9,10 @@
 -- submission, but NO ONE can read submissions with the public/anon key.
 -- You can view submissions in the Supabase Dashboard (Table Editor), which
 -- uses the privileged service role and bypasses RLS.
+--
+-- This script is idempotent — safe to re-run. IMPORTANT: if you created the
+-- table via the Table Editor UI, RLS is enabled with NO policies, so inserts
+-- fail with error 42501 until the INSERT policy below is added.
 -- ============================================================================
 
 create table if not exists public.contacts (
