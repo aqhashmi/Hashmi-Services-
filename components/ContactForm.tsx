@@ -29,29 +29,26 @@ const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 /**
  * Client-side validated contact form.
  *
- * 🔌 BACKEND INTEGRATION:
- * This form is wired to a placeholder handler that simulates a request.
- * To connect a real backend, replace the body of `submitToBackend` below with
- * a fetch() to your API route (e.g. POST /api/contact) or an email service
- * such as Resend, SendGrid, or Formspree. See README.md for details.
+ * Submissions are POSTed to /api/contact (app/api/contact/route.ts), which
+ * stores them in Supabase. The route also validates server-side. No auth is
+ * required — anyone can submit. See README.md (Supabase section) for setup.
  */
 async function submitToBackend(data: FormState): Promise<void> {
-  // --- Replace everything inside this function with your real integration ---
-  //
-  // Example (Next.js Route Handler at app/api/contact/route.ts):
-  //
-  //   const res = await fetch("/api/contact", {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify(data),
-  //   });
-  //   if (!res.ok) throw new Error("Request failed");
-  //
-  // For now we just log and simulate a network delay so the UX is testable.
-  console.log("Contact form submission (placeholder):", data);
-  await new Promise((resolve) => setTimeout(resolve, 1200));
-  // To test the error state, throw here instead:
-  // throw new Error("Simulated failure");
+  // Posts to the Next.js Route Handler (app/api/contact/route.ts), which
+  // stores the submission in Supabase. No auth — anyone can submit.
+  const res = await fetch("/api/contact", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+
+  if (!res.ok) {
+    // Surface the server's message when available, otherwise a generic one.
+    const payload = (await res.json().catch(() => null)) as
+      | { error?: string }
+      | null;
+    throw new Error(payload?.error || "Request failed. Please try again.");
+  }
 }
 
 export function ContactForm() {

@@ -111,49 +111,60 @@ scripts/                 # Dev helper: placeholder logo generator
 
 ---
 
-## 🔌 Connecting a Real Contact-Form Backend
+## 🔌 Backend: Supabase (contact form)
 
-There is **no backend** in this project by design. The contact form
-(`components/ContactForm.tsx`) is fully validated on the client and calls a
-placeholder `submitToBackend()` function that just logs the data and simulates
-a network delay.
+The contact form is wired to **Supabase**. There is **no authentication** —
+any visitor can submit. The flow is:
 
-To wire up a real integration, edit **`submitToBackend()`** in
-`components/ContactForm.tsx`. Two common approaches:
+```
+ContactForm (client)  →  POST /api/contact (server route)  →  Supabase `contacts` table
+```
 
-**Option A — Next.js Route Handler (recommended):**
+- `components/ContactForm.tsx` — validates on the client and POSTs the data.
+- `app/api/contact/route.ts` — validates again server-side and inserts the row.
+- `lib/supabase/server.ts` / `lib/supabase/client.ts` — Supabase clients (via `@supabase/ssr`).
 
-1. Create `app/api/contact/route.ts`:
+### Setup (one-time)
 
-   ```ts
-   import { NextResponse } from "next/server";
+1. **Install deps** (already in `package.json`):
 
-   export async function POST(req: Request) {
-     const data = await req.json();
-     // TODO: send an email (Resend / SendGrid / Nodemailer),
-     // or forward to your CRM / database here.
-     return NextResponse.json({ ok: true });
-   }
+   ```bash
+   npm install @supabase/supabase-js @supabase/ssr
    ```
 
-2. Replace the body of `submitToBackend()` with:
+2. **Add environment variables.** Copy `.env.example` → `.env` and fill in your
+   project's values (Supabase Dashboard → Project Settings → API):
 
-   ```ts
-   const res = await fetch("/api/contact", {
-     method: "POST",
-     headers: { "Content-Type": "application/json" },
-     body: JSON.stringify(data),
-   });
-   if (!res.ok) throw new Error("Request failed");
+   ```bash
+   NEXT_PUBLIC_SUPABASE_URL=https://YOUR-PROJECT-REF.supabase.co
+   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_xxx
    ```
 
-**Option B — Third-party form service** (no server code): point
-`submitToBackend()` at a provider like **Formspree**, **Getform**, or **Web3Forms**
-by `fetch`-ing their endpoint with your form data.
+   > `NEXT_PUBLIC_*` keys are exposed to the browser by design. The publishable
+   > key is safe to ship — access is controlled by Row Level Security, not the key.
 
-> 💡 Email providers worth a look: [Resend](https://resend.com),
-> [SendGrid](https://sendgrid.com), [Postmark](https://postmarkapp.com).
-> Store API keys in `.env.local` (never commit them).
+3. **Create the table + policy.** In the Supabase Dashboard → **SQL Editor**,
+   paste and run the contents of [`supabase/schema.sql`](supabase/schema.sql).
+   It creates the `contacts` table and an RLS policy that lets **anyone INSERT**
+   a submission but **no one read** submissions with the public key (they stay
+   private; view them in the Dashboard's Table Editor).
+
+4. **Run the app** and submit the form:
+
+   ```bash
+   npm run dev
+   ```
+
+   Submissions appear in **Supabase → Table Editor → contacts**.
+
+### Notes
+
+- The API route returns `201` on success, `400` for validation errors, and
+  `500` if the insert fails (e.g. the table hasn't been created yet).
+- To email submissions in addition to storing them, add a provider call inside
+  `app/api/contact/route.ts` after the insert — e.g. [Resend](https://resend.com)
+  or [SendGrid](https://sendgrid.com). Keep any secret keys in `.env`
+  (without the `NEXT_PUBLIC_` prefix so they stay server-only).
 
 ### WhatsApp & phone
 
